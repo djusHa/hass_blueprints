@@ -1,0 +1,61 @@
+blueprint:
+  name: A Four Button MQTT Ebay RC
+  description: Blueprint for 433 Mhz RC from Ebay
+  domain: automation
+  source_url: https://www.djusha.de
+
+  input:
+    topic_input:
+      default: fhem/rc
+      name: Topic
+      description: please input your RC MQTT Topic
+    action_btn_1:
+      name: Action
+      description: Button 1 Action
+      default: []
+      selector:
+        action: {}
+    action_btn_2:
+      name: Action
+      description: Button 2 Action
+      default: []
+      selector:
+        action: {}
+    action_btn_3:
+      name: Action
+      description: Button 3 Action
+      default: []
+      selector:
+        action: {}
+    action_btn_4:
+      name: Action
+      description: Button 4 Action
+      default: []
+      selector:
+        action: {}
+
+trigger:
+  platform: mqtt
+  topic: !input topic_input
+
+action:
+- choose:
+  - conditions:
+    - condition: template
+      value_template: "{{ trigger.payload  == 'button_1' }}"
+    sequence: !input 'action_btn_1'
+  - conditions:
+    - condition: template
+      value_template: "{{ trigger.payload  == 'button_2' }}"
+    sequence: !input 'action_btn_2'
+  - conditions:
+    - condition: template
+      value_template: "{{ trigger.payload  == 'button_3' }}"
+    sequence: !input 'action_btn_3'
+  - conditions:
+    - condition: template
+      value_template: "{{ trigger.payload  == 'button_4' }}"
+    sequence: !input 'action_btn_4'
+
+mode: parallel
+max: 10
