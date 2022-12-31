@@ -2,7 +2,7 @@ blueprint:
   name: A Four Button MQTT Ebay RC
   description: Blueprint for 433 Mhz RC from Ebay
   domain: automation
-  source_url: https://www.djusha.de
+  source_url: https://github.com/djusHa/hass_blueprints/blob/main/blueprints/mqtt_4_btn_remote.yaml
 
   input:
     topic_input:
