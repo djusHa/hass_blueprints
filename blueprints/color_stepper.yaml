@@ -1,0 +1,43 @@
+blueprint:
+  name: Color Stepper
+  description: Steps through a color Array on each step ( buttonpress or whatever).
+                Based on work from hugalafutro.
+                First, create an Counter Helper, from 0 to 25, 1 Step.
+                Second, create Automation with this Blueprint, add created before Counter
+                and Light destination.
+                At last, create something that increment and decrement the Counter.
+                Color should change, you should be Happy ;-)
+  domain: automation
+  input:
+    cnt_color:
+      name: Counter Helper
+      description: Select your Color Counter Helper
+      selector:
+        entity:
+          domain: counter
+    cl_light:
+      name: Light destination
+      description: Choose Light entity for Color Loop
+      selector:
+        target:
+          entity:
+            domain: light
+variables:
+  colors: "{{ [[0.323,0.329],\n
+    [0.217,0.077], [0.157,0.05], [0.136,0.04], [0.137,0.065],\n    [0.141,0.137],
+    [0.146,0.238], [0.151,0.343], [0.157,0.457],\n    [0.164,0.591], [0.17,0.703],
+    [0.172,0.747], [0.199,0.724],\n    [0.269,0.665], [0.36,0.588], [0.444,0.517],
+    [0.527,0.447],\n    [0.612,0.374], [0.677,0.319], [0.701,0.299], [0.667,0.284],\n
+    \   [0.581,0.245], [0.477,0.196], [0.385,0.155], [0.301,0.116], \n    [0.217,0.077]]
+    }}"
+  color_id: !input cnt_color
+trigger:
+  - platform: state
+    entity_id: !input cnt_color
+action:
+  - service: light.turn_on
+    data_template:
+      xy_color: "{{ colors[ states(color_id) | int ] }}"
+      transition: 1
+    target: !input cl_light
+mode: single
